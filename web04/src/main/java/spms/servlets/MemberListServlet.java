@@ -7,17 +7,22 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.servlet.ServletContext;
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @WebServlet("/member/list")
-public class MemberListServlet extends GenericServlet {
+public class MemberListServlet extends HttpServlet {//2. extends GenericServlet {
 	@Override
-	public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+	//2. public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// JDBC 객체 주소를 보관할 참조 변수 선언
 		Connection conn = null;
 		Statement stmt = null;
@@ -25,11 +30,18 @@ public class MemberListServlet extends GenericServlet {
 		
 		// 데이터베이스 관련 코드를 위한 try~ catch~
 		try {
+			/*
 			DriverManager.registerDriver(new org.mariadb.jdbc.Driver());
 			conn = DriverManager.getConnection(
 					"jdbc:mariadb://localhost/test", // test는 DB명
 					"root",
-					"1234");
+					"1234"); */
+			ServletContext sc = this.getServletContext();
+			Class.forName(sc.getInitParameter("driver"));
+			conn = DriverManager.getConnection(
+					sc.getInitParameter("url"),
+					sc.getInitParameter("username"),
+					sc.getInitParameter("password"));
 			stmt = conn.createStatement(); // createStatement() 가 반환하는 것은 java.sql.Statement 인터페이스의 구현체. 이 객체를 통해 DB에 SQL문을 보낼 수 있음.
 			rs = stmt.executeQuery(
 					"select MNO, MNAME, EMAIL, CRE_DATE" +
@@ -47,7 +59,9 @@ public class MemberListServlet extends GenericServlet {
 						"<a href='update?no=" + rs.getInt("MNO") + "'>" +
 						rs.getString("MNAME") + "</a>, " +
 						rs.getString("EMAIL") + ", " +
-						rs.getDate("CRE_DATE") + "<br>");
+						rs.getDate("CRE_DATE") +
+						"<a href='delete?no=" + rs.getInt("MNO") + "'>" + 
+						"[삭제]" + "</a><br>");
 			}
 			out.println("</body></html>");
 		} catch (Exception e) {

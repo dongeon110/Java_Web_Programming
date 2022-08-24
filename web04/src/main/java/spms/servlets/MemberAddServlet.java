@@ -2,6 +2,7 @@ package spms.servlets;
 
 import java.io.IOException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,7 +38,7 @@ public class MemberAddServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		request.setCharacterEncoding("UTF-8"); // Default ISO-8859-1 (ISO-Latin-1)
+//		request.setCharacterEncoding("UTF-8"); // Default ISO-8859-1 (ISO-Latin-1)
 		// GET 이면 server.xml에서 Connector에 URIEncoding="UTF-8"을 준다
 		
 		
@@ -46,11 +47,12 @@ public class MemberAddServlet extends HttpServlet {
 		// Insert Query를 실행할 것이기 때문에 rs는 없다.
 		
 		try {
-			DriverManager.registerDriver(new org.mariadb.jdbc.Driver());
+			ServletContext sc = this.getServletContext();
+			Class.forName(sc.getInitParameter("driver"));
 			conn = DriverManager.getConnection(
-					"jdbc:mariadb://localhost/test",
-					"root",
-					"1234");
+					sc.getInitParameter("url"),
+					sc.getInitParameter("username"),
+					sc.getInitParameter("password"));
 			stmt = conn.prepareStatement(
 					"INSERT INTO members(EMAIL, PWD, MNAME, CRE_DATE, MOD_DATE)"
 					+ " VALUES (?, ?, ?, NOW(), NOW())");
