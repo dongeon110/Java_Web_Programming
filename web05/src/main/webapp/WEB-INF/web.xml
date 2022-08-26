@@ -43,6 +43,16 @@
 	</filter-mapping>
 	-->
 	
+	<!-- 서블릿 선언 -->
+	<servlet>
+		<servlet-name>AppInitServlet</servlet-name>
+		<servlet-class>spms.servlets.AppInitServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!-- load on startup태그의 값은 생성 순서.
+	생성순서가 같은 서블릿이 여러개 있으면 먼저 선언된 것이 먼저 생성 -->
+	
+	
 	<!-- 서블릿 선언 Annotation으로 서블릿 초기화 매개변수 설정을 위해 주석처리 
 	<servlet>
 	
