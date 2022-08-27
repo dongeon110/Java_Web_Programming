@@ -35,11 +35,14 @@ public class MemberListServlet extends HttpServlet {
 		
 		try {
 			ServletContext sc = this.getServletContext();
+			
+//			// ServletContext 보관소에서 저장된 DB를 꺼내쓰기 위해 제거
 //			Class.forName(sc.getInitParameter("driver"));
 //			conn = DriverManager.getConnection(
 //					sc.getInitParameter("url"),
 //					sc.getInitParameter("username"),
 //					sc.getInitParameter("password"));
+			
 			conn = (Connection) sc.getAttribute("conn");
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(
