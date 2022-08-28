@@ -58,10 +58,9 @@ public class MemberAddServlet extends HttpServlet {
 //					sc.getInitParameter("url"),
 //					sc.getInitParameter("username"),
 //					sc.getInitParameter("password"));
+			
 			// ServletContext 읽기
 			conn = (Connection) sc.getAttribute("conn");
-			
-			
 			
 			stmt = conn.prepareStatement(
 					"INSERT INTO members(EMAIL, PWD, MNAME, CRE_DATE, MOD_DATE)"

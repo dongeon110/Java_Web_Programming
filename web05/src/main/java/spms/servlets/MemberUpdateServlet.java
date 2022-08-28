@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,11 +29,14 @@ public class MemberUpdateServlet extends HttpServlet {
 		
 		try {
 			ServletContext sc = this.getServletContext();
-			Class.forName(sc.getInitParameter("driver"));
-			conn = DriverManager.getConnection(
-					sc.getInitParameter("url"),
-					sc.getInitParameter("username"),
-					sc.getInitParameter("password")); // 초기화 매개변수를 이요하여 데이터베이스 연결
+			
+//			Class.forName(sc.getInitParameter("driver"));
+//			conn = DriverManager.getConnection(
+//					sc.getInitParameter("url"),
+//					sc.getInitParameter("username"),
+//					sc.getInitParameter("password")); // 초기화 매개변수를 이요하여 데이터베이스 연결
+			
+			conn = (Connection) sc.getAttribute("conn");
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(
 					"select MNO, EMAIL, MNAME, CRE_DATE from MEMBERS" +
@@ -40,24 +44,27 @@ public class MemberUpdateServlet extends HttpServlet {
 			rs.next();
 			
 			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<html><head><title>회원정보</title></head>");
-			out.println("<body><h1>회원정보</h1>");
-			out.println("<form action='update' method='post'>"); // 회원 상세페이지에서 바로 값을 변경할 수 있도록 입력폼 형태로 만듦
-			out.println("번호: <input type='text' name='no' value='" + request.getParameter("no") + "'readonly><br>"); // PK라서 변경할 수 없기 때문에 readonly
-			out.println("이름: *<input type='text' name='name' value='" + rs.getString("MNAME") + "'><br>");
-			out.println("이메일: <input type='text' name='email' value='" + rs.getString("EMAIL") + "'><br>");
-			out.println("가입일: " + rs.getDate("CRE_DATE") + "<br>");
-			out.println("<input type='submit' value='저장'>");
-			out.println(
-					"<input type='button' value='삭제' onclick='location.href=" +
-					"\"delete?no=" + request.getParameter("no") + "\"'>");
-			out.println("<input type='button' value='취소' onclick='location.href=\"list\"'>");
-			out.println("</form>");
-			out.println("</body></html>");
+//			PrintWriter out = response.getWriter();
+//			out.println("<html><head><title>회원정보</title></head>");
+//			out.println("<body><h1>회원정보</h1>");
+//			out.println("<form action='update' method='post'>"); // 회원 상세페이지에서 바로 값을 변경할 수 있도록 입력폼 형태로 만듦
+//			out.println("번호: <input type='text' name='no' value='" + request.getParameter("no") + "'readonly><br>"); // PK라서 변경할 수 없기 때문에 readonly
+//			out.println("이름: <input type='text' name='name' value='" + rs.getString("MNAME") + "'><br>");
+//			out.println("이메일: <input type='text' name='email' value='" + rs.getString("EMAIL") + "'><br>");
+//			out.println("가입일: " + rs.getDate("CRE_DATE") + "<br>");
+//			out.println("<input type='submit' value='저장'>");
+//			out.println(
+//					"<input type='button' value='삭제' onclick='location.href=" +
+//					"\"delete?no=" + request.getParameter("no") + "\"'>");
+//			out.println("<input type='button' value='취소' onclick='location.href=\"list\"'>");
+//			out.println("</form>");
+//			out.println("</body></html>");
 			
 		} catch (Exception e) {
-			throw new ServletException(e);
+//			throw new ServletException(e);
+			request.setAttribute("error", e);
+			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
+			rd.forward(request, response);
 		} finally {
 			try {if (rs != null) rs.close();} catch(Exception e) {}
 			try {if (stmt != null) stmt.close();} catch(Exception e) {}
@@ -86,7 +93,11 @@ public class MemberUpdateServlet extends HttpServlet {
 			stmt.executeUpdate();
 			response.sendRedirect("list");
 		} catch (Exception e) {
-			throw new ServletException(e);
+//			throw new ServletException(e);
+			request.setAttribute("error", e);
+			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
+			rd.forward(request, response);
+			
 		} finally {
 			try {if (stmt != null) stmt.close();} catch(Exception e) {}
 			try {if (conn != null) conn.close();} catch(Exception e) {}
