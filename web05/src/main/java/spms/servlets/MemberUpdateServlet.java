@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -15,6 +16,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import spms.vo.Member;
+import spms.dao.MemberDao;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.annotation.WebInitParam;
 
@@ -37,11 +42,23 @@ public class MemberUpdateServlet extends HttpServlet {
 //					sc.getInitParameter("password")); // 초기화 매개변수를 이요하여 데이터베이스 연결
 			
 			conn = (Connection) sc.getAttribute("conn");
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(
-					"select MNO, EMAIL, MNAME, CRE_DATE from MEMBERS" +
-					" where MNO=" + request.getParameter("no"));
-			rs.next();
+			MemberDao memberDao = new MemberDao();
+			memberDao.setConnection(conn);
+			
+			
+//			stmt = conn.createStatement();
+//			rs = stmt.executeQuery(
+//					"select MNO, EMAIL, MNAME, CRE_DATE from MEMBERS" +
+//					" where MNO=" + request.getParameter("no"));
+//			rs.next();
+//			Member member = new Member();
+//			member	.setNo(rs.getInt("MNO"))
+//					.setEmail(rs.getString("EMAIL"))
+//					.setName(rs.getString("MNAME"))
+//					.setCreatedDate(rs.getDate("CRE_DATE"));
+			request.setAttribute("member", memberDao.selectOne(Integer.parseInt(request.getParameter("no"))));
+
+			
 			
 			response.setContentType("text/html; charset=UTF-8");
 //			PrintWriter out = response.getWriter();
@@ -60,16 +77,23 @@ public class MemberUpdateServlet extends HttpServlet {
 //			out.println("</form>");
 //			out.println("</body></html>");
 			
+			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberUpdateForm.jsp");
+			rd.include(request, response);
+			
+			
+			
 		} catch (Exception e) {
 //			throw new ServletException(e);
+			e.printStackTrace();
 			request.setAttribute("error", e);
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
-		} finally {
-			try {if (rs != null) rs.close();} catch(Exception e) {}
-			try {if (stmt != null) stmt.close();} catch(Exception e) {}
-			try {if (conn != null) conn.close();} catch(Exception e) {}
 		}
+//		} finally {
+//			try {if (rs != null) rs.close();} catch(Exception e) {}
+//			try {if (stmt != null) stmt.close();} catch(Exception e) {}
+////			try {if (conn != null) conn.close();} catch(Exception e) {}
+//		}
 	}
 	
 	
@@ -80,27 +104,37 @@ public class MemberUpdateServlet extends HttpServlet {
 		PreparedStatement stmt = null;
 		try {
 			ServletContext sc = this.getServletContext();
-			Class.forName(sc.getInitParameter("driver"));
-			conn = DriverManager.getConnection(
-					sc.getInitParameter("url"),
-					sc.getInitParameter("username"),
-					sc.getInitParameter("password"));
-			stmt = conn.prepareStatement(
-					"UPDATE MEMBERS SET EMAIL=?, MNAME=?, MOD_DATE=now() WHERE MNO=?");
-			stmt.setString(1, request.getParameter("email"));
-			stmt.setString(2, request.getParameter("name"));
-			stmt.setInt(3, Integer.parseInt(request.getParameter("no")));
-			stmt.executeUpdate();
+//			Class.forName(sc.getInitParameter("driver"));
+//			conn = DriverManager.getConnection(
+//					sc.getInitParameter("url"),
+//					sc.getInitParameter("username"),
+//					sc.getInitParameter("password"));
+			conn = (Connection) sc.getAttribute("conn");
+			MemberDao memberDao = new MemberDao();
+			memberDao.setConnection(conn);
+			Member updateMember = new Member()
+							.setName(request.getParameter("name"))
+							.setEmail(request.getParameter("email"))
+							.setNo(Integer.parseInt(request.getParameter("no")));
+			memberDao.update(updateMember);
+			
+//			stmt = conn.prepareStatement(
+//					"UPDATE MEMBERS SET EMAIL=?, MNAME=?, MOD_DATE=now() WHERE MNO=?");
+//			stmt.setString(1, request.getParameter("email"));
+//			stmt.setString(2, request.getParameter("name"));
+//			stmt.setInt(3, Integer.parseInt(request.getParameter("no")));
+//			stmt.executeUpdate();
 			response.sendRedirect("list");
 		} catch (Exception e) {
 //			throw new ServletException(e);
+			e.printStackTrace();
 			request.setAttribute("error", e);
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
-			
-		} finally {
-			try {if (stmt != null) stmt.close();} catch(Exception e) {}
-			try {if (conn != null) conn.close();} catch(Exception e) {}
 		}
+//		} finally {
+//			try {if (stmt != null) stmt.close();} catch(Exception e) {}
+////			try {if (conn != null) conn.close();} catch(Exception e) {}
+//		}
 	}
 }

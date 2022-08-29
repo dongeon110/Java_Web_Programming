@@ -1,5 +1,7 @@
 package spms.servlets;
 
+import spms.dao.MemberDao;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -37,21 +39,28 @@ public class MemberDeleteServlet extends HttpServlet {
 //					sc.getInitParameter("password"));
 			
 			conn = (Connection) sc.getAttribute("conn");
-			stmt = conn.prepareStatement(
-					"DELETE FROM members WHERE MNO=?");
-			stmt.setInt(1, Integer.parseInt(request.getParameter("no")));
-			stmt.executeUpdate();
+			MemberDao memberDao = new MemberDao();
+			memberDao.setConnection(conn);
+			memberDao.delete(Integer.parseInt(request.getParameter("no")));
+			
+//			stmt = conn.prepareStatement(
+//					"DELETE FROM members WHERE MNO=?");
+//			stmt.setInt(1, Integer.parseInt(request.getParameter("no")));
+//			stmt.executeUpdate();
+			
 			response.sendRedirect("list");
 			
 		} catch (Exception e) {
 //			throw new ServletException(e);
+			e.printStackTrace();
 			request.setAttribute("error", e);
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
-		} finally {
-			try {if (stmt != null) stmt.close();} catch(Exception e) {}
-			try {if (conn != null) conn.close();} catch(Exception e) {}
 		}
+//		} finally {
+//			try {if (stmt != null) stmt.close();} catch(Exception e) {}
+//			try {if (conn != null) conn.close();} catch(Exception e) {}
+//		}
 		
 		
 	}
