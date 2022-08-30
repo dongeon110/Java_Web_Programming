@@ -43,11 +43,15 @@ public class MemberListServlet extends HttpServlet {
 //					sc.getInitParameter("username"),
 //					sc.getInitParameter("password"));
 			
-			conn = (Connection) sc.getAttribute("conn");
 			
-			// 사용하기 전에 셋터를 호출하여 ServletContext에서 DB커넥션 객체 주입
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection(conn);
+			// Listener 호출 위해 주석처리
+//			conn = (Connection) sc.getAttribute("conn");
+//			
+//			// 사용하기 전에 셋터를 호출하여 ServletContext에서 DB커넥션 객체 주입
+//			MemberDao memberDao = new MemberDao();
+			// Listener에서 불러옴
+			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
+//			memberDao.setConnection(conn);
 			
 			request.setAttribute("members", memberDao.selectList());
 			

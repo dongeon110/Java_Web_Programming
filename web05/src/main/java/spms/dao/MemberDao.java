@@ -7,21 +7,44 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
+
+
 import spms.vo.Member;
+import spms.util.DBConnectionPool;
 
 public class MemberDao {
 
-	Connection connection;
+	// DB Connection pool 적용을 위해 주석처리
+//	Connection connection;
+//	
+//	public void setConnection(Connection connection) {
+//		this.connection = connection;
+//	}
 	
-	public void setConnection(Connection connection) {
-		this.connection = connection;
+//	DBConnectionPool connPool;
+	DataSource ds;
+	
+	public void setDataSource(DataSource ds) {
+		this.ds = ds;
 	}
 	
+	
+//	public void setDbConnectionPool(DBConnectionPool connPool) {
+//		this.connPool = connPool;
+//	}
+	
+	
+	
 	public List<Member> selectList() throws Exception {
+		Connection connection = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		
 		try {
+			connection = ds.getConnection();
+//			connection = connPool.getConnection();
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(
 					"SELECT MNO, MNAME, EMAIL, CRE_DATE" +
@@ -44,14 +67,19 @@ public class MemberDao {
 		} finally {
 			try {if (rs != null) rs.close();} catch(Exception e) {}
 			try {if (stmt != null) stmt.close();} catch(Exception e) {}
+//			if (connection != null) connPool.returnConnection(connection);
+			try {if (connection != null) connection.close();} catch(Exception e) {}
 		}
 	}
 	
 	// MemberAddServlet
 	public int insert(Member member) throws Exception {
+		Connection connection = null;
 		PreparedStatement stmt = null;
 		
 		try {
+			connection = ds.getConnection();
+//			connection = connPool.getConnection();
 			stmt = connection.prepareStatement(
 					"INSERT INTO members(EMAIL, PWD, MNAME, CRE_DATE, MOD_DATE)"
 					+ " VALUES (?, ?, ?, NOW(), NOW())");
@@ -63,13 +91,18 @@ public class MemberDao {
 			throw e;
 		} finally {
 			try {if (stmt != null) stmt.close();} catch(Exception e) {}
+//			if (connection != null) connPool.returnConnection(connection);
+			try {if (connection != null) connection.close();} catch(Exception e) {}
 		}
 	}
 	
 	// MemberDeleteServlet
 	public int delete(Integer no) throws Exception {
+		Connection connection = null;
 		PreparedStatement stmt = null;
 		try {
+			connection = ds.getConnection();
+//			connection = connPool.getConnection();
 			stmt = connection.prepareStatement(
 					"DELETE FROM members WHERE MNO=?");
 			stmt.setInt(1, no);
@@ -79,15 +112,20 @@ public class MemberDao {
 			throw e;
 		} finally {
 			try {if (stmt != null) stmt.close();} catch(Exception e) {}
+//			if (connection != null) connPool.returnConnection(connection);
+			try {if (connection != null) connection.close();} catch(Exception e) {}
 		}
 	}
 	
 	// MemberUpdateServlet - selectOne, update
 	public Member selectOne(Integer no) throws Exception {
+		Connection connection = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		
 		try {
+			connection = ds.getConnection();
+//			connection = connPool.getConnection();
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(
 					"SELECT MNO, EMAIL, MNAME, CRE_DATE FROM members"
@@ -105,12 +143,17 @@ public class MemberDao {
 		} finally {
 			try {if (rs != null) rs.close();} catch(Exception e) {}
 			try {if (stmt != null) stmt.close();} catch(Exception e) {}
+//			if (connection != null) connPool.returnConnection(connection);
+			try {if (connection != null) connection.close();} catch(Exception e) {}
 		}
 	}
 	
 	public int update(Member member) throws Exception {
+		Connection connection = null;
 		PreparedStatement stmt = null;
 		try {
+			connection = ds.getConnection();
+//			connection = connPool.getConnection();
 			stmt = connection.prepareStatement(
 					"UPDATE MEMBERS SET EMAIL=?, MNAME=?, MOD_DATE=now() WHERE MNO=?");
 			stmt.setString(1, member.getEmail());
@@ -121,15 +164,20 @@ public class MemberDao {
 			throw e;
 		} finally {
 			try {if (stmt != null) stmt.close();} catch(Exception e) {}
+//			if (connection != null) connPool.returnConnection(connection);
+			try {if (connection != null) connection.close();} catch(Exception e) {}
 		}
 	}
 	
 	// LoginServlet
 	public Member exist(String email, String password) throws Exception {
+		Connection connection = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
+			connection = ds.getConnection();
+//			connection = connPool.getConnection();
 			stmt = connection.prepareStatement(
 					"SELECT MNAME, EMAIL FROM MEMBERS WHERE EMAIL=? AND PWD=?");
 			stmt.setString(1, email);
@@ -147,6 +195,8 @@ public class MemberDao {
 		} finally {
 			try {if (rs != null) rs.close();} catch(Exception e) {}
 			try {if (stmt != null) stmt.close();} catch(Exception e) {}
+//			if (connection != null) connPool.returnConnection(connection);
+			try {if (connection != null) connection.close();} catch(Exception e) {}
 		}
 	}
 	

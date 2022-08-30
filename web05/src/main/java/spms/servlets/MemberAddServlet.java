@@ -64,9 +64,11 @@ public class MemberAddServlet extends HttpServlet {
 //					sc.getInitParameter("password"));
 			
 			// ServletContext 읽기
-			conn = (Connection) sc.getAttribute("conn");
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection(conn);
+//			conn = (Connection) sc.getAttribute("conn");
+//			MemberDao memberDao = new MemberDao();
+//			memberDao.setConnection(conn);
+			
+			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
 			memberDao.insert(new Member()
 			        .setEmail(request.getParameter("email"))
 			        .setPassword(request.getParameter("password"))

@@ -38,9 +38,11 @@ public class MemberDeleteServlet extends HttpServlet {
 //					sc.getInitParameter("username"),
 //					sc.getInitParameter("password"));
 			
-			conn = (Connection) sc.getAttribute("conn");
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection(conn);
+//			conn = (Connection) sc.getAttribute("conn");
+//			MemberDao memberDao = new MemberDao();
+//			memberDao.setConnection(conn);
+			
+			MemberDao memberDao = (MemberDao) sc.getAttribute("memberDao");
 			memberDao.delete(Integer.parseInt(request.getParameter("no")));
 			
 //			stmt = conn.prepareStatement(

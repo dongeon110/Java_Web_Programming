@@ -41,10 +41,10 @@ public class MemberUpdateServlet extends HttpServlet {
 //					sc.getInitParameter("username"),
 //					sc.getInitParameter("password")); // 초기화 매개변수를 이요하여 데이터베이스 연결
 			
-			conn = (Connection) sc.getAttribute("conn");
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection(conn);
-			
+//			conn = (Connection) sc.getAttribute("conn");
+//			MemberDao memberDao = new MemberDao();
+//			memberDao.setConnection(conn);
+			MemberDao memberDao = (MemberDao) sc.getAttribute("memberDao");
 			
 //			stmt = conn.createStatement();
 //			rs = stmt.executeQuery(
@@ -109,9 +109,12 @@ public class MemberUpdateServlet extends HttpServlet {
 //					sc.getInitParameter("url"),
 //					sc.getInitParameter("username"),
 //					sc.getInitParameter("password"));
-			conn = (Connection) sc.getAttribute("conn");
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection(conn);
+//			conn = (Connection) sc.getAttribute("conn");
+//			MemberDao memberDao = new MemberDao();
+//			memberDao.setConnection(conn);
+			
+			
+			MemberDao memberDao = (MemberDao) sc.getAttribute("memberDao");
 			Member updateMember = new Member()
 							.setName(request.getParameter("name"))
 							.setEmail(request.getParameter("email"))
