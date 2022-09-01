@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 // UI 출력 코드를 제거하고 UI생성 및 출력을 JSP에게 위임한다.
 @WebServlet("/member/list")
 public class MemberListServlet extends HttpServlet {
-	private static final long serialVersionUIT = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
