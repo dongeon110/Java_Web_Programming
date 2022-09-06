@@ -25,8 +25,8 @@ import javax.servlet.ServletResponse;
 public class MemberDeleteServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = null;
-		PreparedStatement stmt = null;
+//		Connection conn = null;
+//		PreparedStatement stmt = null;
 		
 		try {
 			ServletContext sc = this.getServletContext();
