@@ -18,7 +18,7 @@
 		<h1>회원정보</h1>
 		
 		
-		<form action='update' method='post'>
+		<form action='update.do' method='post'>
 			
 			번호: <input type='text' name='no' value='${member.no}' readonly><br>
 			이름: <input type='text' name='name' value='${member.name}'><br>
@@ -26,7 +26,7 @@
 			가입일: ${member.createdDate} <br>
 			
 			<input type='submit' value='저장'>
-			<input type='button' value='삭제' onclick='location.href="delete?no=${member.no}";'>
+			<input type='button' value='삭제' onclick='location.href="delete.do?no=${member.no}";'>
 		</form>
 		
 	</body>

@@ -17,6 +17,8 @@ public class LogOutServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.invalidate();
 		
-		response.sendRedirect("login");
+//		// Change into PageController
+//		response.sendRedirect("login");
+		request.setAttribute("viewUrl", "login.do");
 	}
 }

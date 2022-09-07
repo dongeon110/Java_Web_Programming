@@ -30,9 +30,9 @@ public class MemberListServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
+//		Connection conn = null;
+//		Statement stmt = null;
+//		ResultSet rs = null;
 		
 		try {
 			ServletContext sc = this.getServletContext();
@@ -61,36 +61,45 @@ public class MemberListServlet extends HttpServlet {
 //					"select MNO, MNAME, EMAIL, CRE_DATE" +
 //					" from MEMBERS order by MNO ASC");
 			
-			response.setContentType("text/html; charset=UTF-8");
 			
-//			ArrayList<Member> members= new ArrayList<>();
-//			
-//			while(rs.next()) {
-//				members.add(new Member()
-//										.setNo(rs.getInt("MNO"))
-//										.setName(rs.getString("MNAME"))
-//										.setEmail(rs.getString("EMAIL"))
-//										.setCreatedDate(rs.getDate("CRE_DATE"))
-//										);
-//			}
-//			
-//			// request 에 회원 목록 데이터 보관
-//			request.setAttribute("members",  members);
 			
-			// JSP로 출력을 위임
-			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberList.jsp"); // 경로가 /로 시작하면 웹 애플리케이션 루트
-			// RequestDispatcher 객체를 얻었으면 포워드하거나 인클루드 하면 됨.
-			// 포워드는 해당 서블릿으로 제어권이 넘어가고 다시 돌아오지 않고
-			// 인클루드는 해당 서블릿에게 제어권을 넘긴 후 작업을 끝내면 다시 제어권이 돌아옴
-			rd.include(request, response);
+//			// JSP로 출력을 위임하는 것을 FrontController 에게 위임하기 위하여 주석처리.
+//			response.setContentType("text/html; charset=UTF-8");
+//			
+////			ArrayList<Member> members= new ArrayList<>();
+////			
+////			while(rs.next()) {
+////				members.add(new Member()
+////										.setNo(rs.getInt("MNO"))
+////										.setName(rs.getString("MNAME"))
+////										.setEmail(rs.getString("EMAIL"))
+////										.setCreatedDate(rs.getDate("CRE_DATE"))
+////										);
+////			}
+////			
+////			// request 에 회원 목록 데이터 보관
+////			request.setAttribute("members",  members);
+//			
+//			// JSP로 출력을 위임
+//			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberList.jsp"); // 경로가 /로 시작하면 웹 애플리케이션 루트
+//			// RequestDispatcher 객체를 얻었으면 포워드하거나 인클루드 하면 됨.
+//			// 포워드는 해당 서블릿으로 제어권이 넘어가고 다시 돌아오지 않고
+//			// 인클루드는 해당 서블릿에게 제어권을 넘긴 후 작업을 끝내면 다시 제어권이 돌아옴
+//			rd.include(request, response);
+			
+			request.setAttribute("viewUrl", "/member/MemberList.jsp");
 			
 			
 		} catch (Exception e) {
 //			throw new ServletException(e);
-			e.printStackTrace();
-			request.setAttribute("error",  e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+//			// 오류가 발생해도 FrontController가 대신 해줌
+//			e.printStackTrace();
+//			request.setAttribute("error",  e);
+//			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
+//			rd.forward(request, response);
+			
+			// DAO 오류는 여기서 던지도록!
+			throw new ServletException(e);
 		}
 //		} finally {
 //			try {if (rs != null) rs.close();} catch(Exception e) {}

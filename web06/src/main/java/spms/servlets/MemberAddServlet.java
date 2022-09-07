@@ -37,9 +37,10 @@ public class MemberAddServlet extends HttpServlet {
 //		out.println("</form>");
 //		out.println("</body></html>");
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/member/MemberForm.jsp");
-		rd.include(request, response);
-		
+		// 페이지 컨트롤러로 만들기 위해
+//		RequestDispatcher rd = request.getRequestDispatcher("/member/MemberForm.jsp");
+//		rd.include(request, response);
+		request.setAttribute("viewUrl", "/member/MemberForm.jsp");
 	}
 	
 	
@@ -49,9 +50,9 @@ public class MemberAddServlet extends HttpServlet {
 //		request.setCharacterEncoding("UTF-8"); // Default ISO-8859-1 (ISO-Latin-1)
 		// GET 이면 server.xml에서 Connector에 URIEncoding="UTF-8"을 준다
 		
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		// Insert Query를 실행할 것이기 때문에 rs는 없다.
+//		Connection conn = null;
+//		PreparedStatement stmt = null;
+//		// Insert Query를 실행할 것이기 때문에 rs는 없다.
 		
 		try {
 			ServletContext sc = this.getServletContext();
@@ -69,10 +70,14 @@ public class MemberAddServlet extends HttpServlet {
 //			memberDao.setConnection(conn);
 			
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
-			memberDao.insert(new Member()
-			        .setEmail(request.getParameter("email"))
-			        .setPassword(request.getParameter("password"))
-			        .setName(request.getParameter("name")));
+			
+			Member member = (Member)request.getAttribute("member");
+			memberDao.insert(member);
+			
+//			memberDao.insert(new Member()
+//			        .setEmail(request.getParameter("email"))
+//			        .setPassword(request.getParameter("password"))
+//			        .setName(request.getParameter("name")));
 			
 //			stmt = conn.prepareStatement(
 //					"INSERT INTO members(EMAIL, PWD, MNAME, CRE_DATE, MOD_DATE)"
@@ -82,8 +87,8 @@ public class MemberAddServlet extends HttpServlet {
 //			stmt.setString(3, request.getParameter("name"));
 //			stmt.executeUpdate(); // 결과 레코드를 만들지 않는 DDL이나 DML종류의 SQL문을 실행할 때는 executeUpdate()를 호출한다
 			
-			response.sendRedirect("list");
-			
+//			response.sendRedirect("list");
+			request.setAttribute("viewUrl", "redirect:list.do");
 			
 			/* Redirect는 HTML을 출력하지 않는다.
 			response.setContentType("text/html; charset=UTF-8");
@@ -101,10 +106,12 @@ public class MemberAddServlet extends HttpServlet {
 			
 		} catch (Exception e) {
 //			throw new ServletException(e);
-			e.printStackTrace();
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+			
+//			e.printStackTrace();
+//			request.setAttribute("error", e);
+//			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
+//			rd.forward(request, response);
+			throw new ServletException(e);
 		}
 //		} finally {
 //			try {if (stmt != null) stmt.close();} catch (Exception e) {}

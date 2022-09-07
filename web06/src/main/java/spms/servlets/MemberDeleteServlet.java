@@ -50,14 +50,16 @@ public class MemberDeleteServlet extends HttpServlet {
 //			stmt.setInt(1, Integer.parseInt(request.getParameter("no")));
 //			stmt.executeUpdate();
 			
-			response.sendRedirect("list");
+//			response.sendRedirect("list");
+			request.setAttribute("viewUrl", "redirect:list.do");
 			
 		} catch (Exception e) {
 //			throw new ServletException(e);
-			e.printStackTrace();
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+//			e.printStackTrace();
+//			request.setAttribute("error", e);
+//			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
+//			rd.forward(request, response);
+			throw new ServletException(e);
 		}
 //		} finally {
 //			try {if (stmt != null) stmt.close();} catch(Exception e) {}

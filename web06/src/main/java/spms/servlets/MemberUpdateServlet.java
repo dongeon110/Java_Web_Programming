@@ -28,10 +28,10 @@ import javax.servlet.annotation.WebInitParam;
 public class MemberUpdateServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		
+//		Connection conn = null;
+//		Statement stmt = null;
+//		ResultSet rs = null;
+//		
 		try {
 			ServletContext sc = this.getServletContext();
 			
@@ -59,35 +59,36 @@ public class MemberUpdateServlet extends HttpServlet {
 			request.setAttribute("member", memberDao.selectOne(Integer.parseInt(request.getParameter("no"))));
 
 			
-			
-			response.setContentType("text/html; charset=UTF-8");
-//			PrintWriter out = response.getWriter();
-//			out.println("<html><head><title>회원정보</title></head>");
-//			out.println("<body><h1>회원정보</h1>");
-//			out.println("<form action='update' method='post'>"); // 회원 상세페이지에서 바로 값을 변경할 수 있도록 입력폼 형태로 만듦
-//			out.println("번호: <input type='text' name='no' value='" + request.getParameter("no") + "'readonly><br>"); // PK라서 변경할 수 없기 때문에 readonly
-//			out.println("이름: <input type='text' name='name' value='" + rs.getString("MNAME") + "'><br>");
-//			out.println("이메일: <input type='text' name='email' value='" + rs.getString("EMAIL") + "'><br>");
-//			out.println("가입일: " + rs.getDate("CRE_DATE") + "<br>");
-//			out.println("<input type='submit' value='저장'>");
-//			out.println(
-//					"<input type='button' value='삭제' onclick='location.href=" +
-//					"\"delete?no=" + request.getParameter("no") + "\"'>");
-//			out.println("<input type='button' value='취소' onclick='location.href=\"list\"'>");
-//			out.println("</form>");
-//			out.println("</body></html>");
-			
-			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberUpdateForm.jsp");
-			rd.include(request, response);
-			
+//			// Change Page Controller
+//			response.setContentType("text/html; charset=UTF-8");
+////			PrintWriter out = response.getWriter();
+////			out.println("<html><head><title>회원정보</title></head>");
+////			out.println("<body><h1>회원정보</h1>");
+////			out.println("<form action='update' method='post'>"); // 회원 상세페이지에서 바로 값을 변경할 수 있도록 입력폼 형태로 만듦
+////			out.println("번호: <input type='text' name='no' value='" + request.getParameter("no") + "'readonly><br>"); // PK라서 변경할 수 없기 때문에 readonly
+////			out.println("이름: <input type='text' name='name' value='" + rs.getString("MNAME") + "'><br>");
+////			out.println("이메일: <input type='text' name='email' value='" + rs.getString("EMAIL") + "'><br>");
+////			out.println("가입일: " + rs.getDate("CRE_DATE") + "<br>");
+////			out.println("<input type='submit' value='저장'>");
+////			out.println(
+////					"<input type='button' value='삭제' onclick='location.href=" +
+////					"\"delete?no=" + request.getParameter("no") + "\"'>");
+////			out.println("<input type='button' value='취소' onclick='location.href=\"list\"'>");
+////			out.println("</form>");
+////			out.println("</body></html>");
+//			
+//			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberUpdateForm.jsp");
+//			rd.include(request, response);
+			request.setAttribute("viewUrl", "/member/MemberUpdateForm.jsp");
 			
 			
 		} catch (Exception e) {
 //			throw new ServletException(e);
-			e.printStackTrace();
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+//			e.printStackTrace();
+//			request.setAttribute("error", e);
+//			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
+//			rd.forward(request, response);
+			throw new ServletException(e);
 		}
 //		} finally {
 //			try {if (rs != null) rs.close();} catch(Exception e) {}
@@ -100,8 +101,8 @@ public class MemberUpdateServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //		request.setCharacterEncoding("UTF-8");
-		Connection conn = null;
-		PreparedStatement stmt = null;
+//		Connection conn = null;
+//		PreparedStatement stmt = null;
 		try {
 			ServletContext sc = this.getServletContext();
 //			Class.forName(sc.getInitParameter("driver"));
@@ -127,13 +128,18 @@ public class MemberUpdateServlet extends HttpServlet {
 //			stmt.setString(2, request.getParameter("name"));
 //			stmt.setInt(3, Integer.parseInt(request.getParameter("no")));
 //			stmt.executeUpdate();
-			response.sendRedirect("list");
+			
+			
+//			response.sendRedirect("list");
+			request.setAttribute("viewUrl", "redirect:list.do");
+			
 		} catch (Exception e) {
 //			throw new ServletException(e);
-			e.printStackTrace();
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+//			e.printStackTrace();
+//			request.setAttribute("error", e);
+//			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
+//			rd.forward(request, response);
+			throw new ServletException(e);
 		}
 //		} finally {
 //			try {if (stmt != null) stmt.close();} catch(Exception e) {}
