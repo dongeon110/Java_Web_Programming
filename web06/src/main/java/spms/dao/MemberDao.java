@@ -26,6 +26,7 @@ public class MemberDao {
 //	DBConnectionPool connPool;
 	DataSource ds;
 	
+	// DI
 	public void setDataSource(DataSource ds) {
 		this.ds = ds;
 	}

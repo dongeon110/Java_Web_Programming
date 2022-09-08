@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import spms.vo.Member;
 import spms.controls.*;
@@ -25,19 +26,22 @@ public class DispatcherServlet extends HttpServlet {
 			ServletContext sc = this.getServletContext();
 			
 			HashMap<String, Object> model = new HashMap<>();
-			model.put("memberDao", sc.getAttribute("memberDao"));
+			// IoC하면서 memberDao 따로 필요없어짐
+//			model.put("memberDao", sc.getAttribute("memberDao"));
+			model.put("session", request.getSession());
 			
-			String pageControllerPath = null;
-			Controller pageController = null;
+			// pageController는 ServletContext에 저장되어있음.
+//			String pageControllerPath = null;
+			Controller pageController = (Controller) sc.getAttribute(servletPath);
 			
 			// 페이지 컨트롤러로 위임
 			// 서블릿 경로에 따라 조건문을 사용하여 적절한 페이지 컨트롤러를 인클루딩
 			if ("/member/list.do".equals(servletPath)) {
-				pageController = new MemberListController();
+//				pageController = new MemberListController();
 //				pageControllerPath = "/member/list";
 			} else if ("/member/add.do".equals(servletPath)) {
 //				pageControllerPath = "/member/add";
-				pageController = new MemberAddController();
+//				pageController = new MemberAddController();
 				
 				if (request.getParameter("email") != null) {
 					model.put("member", new Member()
@@ -46,19 +50,35 @@ public class DispatcherServlet extends HttpServlet {
 							.setName(request.getParameter("name")));
 				}
 			} else if ("/member/update.do".equals(servletPath)) {
-				pageControllerPath = "/member/update";
+//				pageControllerPath = "/member/update";
+//				pageController = new MemberUpdateController();
+				
+				model.put("no", Integer.parseInt(request.getParameter("no")));
+				
 				if (request.getParameter("email") != null) {
-					request.setAttribute("member", new Member()
+					model.put("updateMember", new Member()
 							.setNo(Integer.parseInt(request.getParameter("no")))
 							.setEmail(request.getParameter("email"))
 							.setName(request.getParameter("name")));
 				}
 			} else if ("/member/delete.do".equals(servletPath)) {
-				pageControllerPath = "/member/delete";
+//				pageControllerPath = "/member/delete";
+//				pageController = new MemberDeleteController();
+				
+				model.put("no", Integer.parseInt(request.getParameter("no")));
 			} else if ("/auth/login.do".equals(servletPath)) {
-				pageControllerPath = "/auth/login";
+//				pageControllerPath = "/auth/login";
+//				pageController = new LogInController();
+				
+				if (request.getParameter("email") != null) {
+					model.put("email", request.getParameter("email"));
+					model.put("password", request.getParameter("password"));
+				}
+				
 			} else if ("/auth/logout.do".equals(servletPath)) {
-				pageControllerPath = "/auth/logout";
+//				pageControllerPath = "/auth/logout";
+//				pageController = new LogOutController();
+				
 			}
 			
 //			// Controller
