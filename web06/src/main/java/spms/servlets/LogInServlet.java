@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import spms.vo.Member;
-import spms.dao.MemberDao;
+import spms.dao.MariaDbMemberDao;
 
 @WebServlet("/auth/login")
 public class LogInServlet extends HttpServlet {
@@ -43,7 +43,7 @@ public class LogInServlet extends HttpServlet {
 //			MemberDao memberDao = new MemberDao();
 //			memberDao.setConnection(conn);
 			
-			MemberDao memberDao = (MemberDao) sc.getAttribute("memberDao");
+			MariaDbMemberDao memberDao = (MariaDbMemberDao) sc.getAttribute("memberDao");
 			Member member = 
 					memberDao.exist(request.getParameter("email"), request.getParameter("password"));
 			

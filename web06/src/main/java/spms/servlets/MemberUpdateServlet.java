@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import spms.vo.Member;
-import spms.dao.MemberDao;
+import spms.dao.MariaDbMemberDao;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.annotation.WebInitParam;
@@ -44,7 +44,7 @@ public class MemberUpdateServlet extends HttpServlet {
 //			conn = (Connection) sc.getAttribute("conn");
 //			MemberDao memberDao = new MemberDao();
 //			memberDao.setConnection(conn);
-			MemberDao memberDao = (MemberDao) sc.getAttribute("memberDao");
+			MariaDbMemberDao memberDao = (MariaDbMemberDao) sc.getAttribute("memberDao");
 			
 //			stmt = conn.createStatement();
 //			rs = stmt.executeQuery(
@@ -115,7 +115,7 @@ public class MemberUpdateServlet extends HttpServlet {
 //			memberDao.setConnection(conn);
 			
 			
-			MemberDao memberDao = (MemberDao) sc.getAttribute("memberDao");
+			MariaDbMemberDao memberDao = (MariaDbMemberDao) sc.getAttribute("memberDao");
 			Member updateMember = new Member()
 							.setName(request.getParameter("name"))
 							.setEmail(request.getParameter("email"))

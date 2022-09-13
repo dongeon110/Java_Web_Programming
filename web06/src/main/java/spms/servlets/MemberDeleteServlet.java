@@ -1,6 +1,6 @@
 package spms.servlets;
 
-import spms.dao.MemberDao;
+import spms.dao.MariaDbMemberDao;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,7 +42,7 @@ public class MemberDeleteServlet extends HttpServlet {
 //			MemberDao memberDao = new MemberDao();
 //			memberDao.setConnection(conn);
 			
-			MemberDao memberDao = (MemberDao) sc.getAttribute("memberDao");
+			MariaDbMemberDao memberDao = (MariaDbMemberDao) sc.getAttribute("memberDao");
 			memberDao.delete(Integer.parseInt(request.getParameter("no")));
 			
 //			stmt = conn.prepareStatement(

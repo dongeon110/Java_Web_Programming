@@ -2,15 +2,22 @@ package spms.controls;
 
 import java.util.Map;
 
-import spms.dao.MemberDao;
+import spms.dao.MariaDbMemberDao;
+import spms.bind.DataBinding;
 
-public class MemberDeleteController implements Controller {
+public class MemberDeleteController implements Controller, DataBinding {
 	
-	MemberDao memberDao;
+	MariaDbMemberDao memberDao;
 	
-	public MemberDeleteController setMemberDao(MemberDao memberDao) {
+	public MemberDeleteController setMemberDao(MariaDbMemberDao memberDao) {
 		this.memberDao = memberDao;
 		return this;
+	}
+	
+	public Object[] getDataBinders() {
+		return new Object[] {
+				"no", Integer.class
+		};
 	}
 	
 	@Override

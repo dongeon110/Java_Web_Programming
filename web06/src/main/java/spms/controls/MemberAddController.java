@@ -2,27 +2,36 @@ package spms.controls;
 
 import java.util.Map;
 
-import spms.dao.MemberDao;
+import spms.dao.MariaDbMemberDao;
 import spms.vo.Member;
+import spms.bind.DataBinding;
 
-public class MemberAddController implements Controller {
+public class MemberAddController implements Controller, DataBinding {
 	
-	MemberDao memberDao;
+	MariaDbMemberDao memberDao;
 	
-	public MemberAddController setMemberDao(MemberDao memberDao) {
+	public MemberAddController setMemberDao(MariaDbMemberDao memberDao) {
 		this.memberDao = memberDao;
 		return this;
 	}
 	
+	public Object[] getDataBinders() {
+		return new Object[] {
+				"member", spms.vo.Member.class
+		};
+	}
+	
+	
+	
 	@Override
 	public String execute(Map<String, Object> model) throws Exception {
+		Member member = (Member) model.get("member");
 		
-		if (model.get("member") == null) { // 입력폼을 요청할 때
+		if (member.getEmail() == null) { // 입력폼을 요청할 때
 			return "/member/MemberForm.jsp";
 		} else { // 등록을 요청할 때
 //			MemberDao memberDao = (MemberDao)model.get("memberDao");
 			
-			Member member = (Member) model.get("member");
 			memberDao.insert(member);
 			
 			return "redirect:list.do";

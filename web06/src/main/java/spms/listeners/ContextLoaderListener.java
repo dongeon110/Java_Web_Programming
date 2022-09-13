@@ -13,7 +13,7 @@ import javax.servlet.annotation.WebListener;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import spms.dao.MemberDao;
+import spms.dao.MariaDbMemberDao;
 import spms.controls.*;
 import spms.util.DBConnectionPool;
 
@@ -55,7 +55,7 @@ public class ContextLoaderListener implements ServletContextListener {
 			
 			
 			// MemberDao 객체를 ServletContext에 보관
-			MemberDao memberDao = new MemberDao();
+			MariaDbMemberDao memberDao = new MariaDbMemberDao();
 ////			memberDao.setConnection(conn);
 //			memberDao.setDbConnectionPool(connPool);
 			memberDao.setDataSource(ds);
@@ -66,13 +66,13 @@ public class ContextLoaderListener implements ServletContextListener {
 			sc.setAttribute("/auth/login.do",
 					new LogInController().setMemberDao(memberDao));
 			sc.setAttribute("/auth/logout.do", new LogOutController());
-			sc.setAttribute("/auth/list.do",
+			sc.setAttribute("/member/list.do",
 					new MemberListController().setMemberDao(memberDao));
-			sc.setAttribute("/auth/add.do",
+			sc.setAttribute("/member/add.do",
 					new MemberAddController().setMemberDao(memberDao));
-			sc.setAttribute("/auth/update.do",
+			sc.setAttribute("/member/update.do",
 					new MemberUpdateController().setMemberDao(memberDao));
-			sc.setAttribute("/auth/delete.do",
+			sc.setAttribute("/member/delete.do",
 					new MemberDeleteController().setMemberDao(memberDao));
 			
 			

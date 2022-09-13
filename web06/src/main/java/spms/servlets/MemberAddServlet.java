@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import spms.dao.MemberDao;
+import spms.dao.MariaDbMemberDao;
 import spms.vo.Member;
 
 import javax.servlet.RequestDispatcher;
@@ -69,7 +69,7 @@ public class MemberAddServlet extends HttpServlet {
 //			MemberDao memberDao = new MemberDao();
 //			memberDao.setConnection(conn);
 			
-			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
+			MariaDbMemberDao memberDao = (MariaDbMemberDao)sc.getAttribute("memberDao");
 			
 			Member member = (Member)request.getAttribute("member");
 			memberDao.insert(member);

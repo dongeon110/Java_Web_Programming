@@ -53,7 +53,7 @@ public class DispatcherServlet extends HttpServlet {
 //				pageControllerPath = "/member/update";
 //				pageController = new MemberUpdateController();
 				
-				model.put("no", Integer.parseInt(request.getParameter("no")));
+//				model.put("no", Integer.parseInt(request.getParameter("no")));
 				
 				if (request.getParameter("email") != null) {
 					model.put("updateMember", new Member()
@@ -71,8 +71,9 @@ public class DispatcherServlet extends HttpServlet {
 //				pageController = new LogInController();
 				
 				if (request.getParameter("email") != null) {
-					model.put("email", request.getParameter("email"));
-					model.put("password", request.getParameter("password"));
+					model.put("loginInfo", new Member()
+							.setEmail(request.getParameter("email"))
+							.setPassword(request.getParameter("password")));
 				}
 				
 			} else if ("/auth/logout.do".equals(servletPath)) {
