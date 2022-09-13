@@ -5,7 +5,9 @@ import java.util.Map;
 import spms.dao.MariaDbMemberDao;
 import spms.vo.Member;
 import spms.bind.DataBinding;
+import spms.annotation.Component;
 
+@Component("/member/update.do")
 public class MemberUpdateController implements Controller, DataBinding {
 	
 	MariaDbMemberDao memberDao;
@@ -24,7 +26,7 @@ public class MemberUpdateController implements Controller, DataBinding {
 	
 	@Override
 	public String execute(Map<String, Object> model) throws Exception {
-		Member updateMember = (Member) model.get("updateMember");
+		Member updateMember = (Member) model.get("member");
 //		MemberDao memberDao = (MemberDao) model.get("memberDao");
 		if (updateMember.getEmail() == null) {
 			model.put("member", memberDao.selectOne((int)model.get("no")));

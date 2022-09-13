@@ -18,6 +18,7 @@
 			<input type='submit' value='추가'>
 			<input type='reset' value='취소'>
 		
+		<jsp:include page="/Tail.jsp"/>
 		</form>
 	</body>
 </html>

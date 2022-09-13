@@ -10,10 +10,11 @@ import java.util.List;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-
+import spms.annotation.Component;
 import spms.vo.Member;
 import spms.util.DBConnectionPool;
 
+@Component("memberDao")
 public class MariaDbMemberDao implements MemberDao {
 
 	// DB Connection pool 적용을 위해 주석처리

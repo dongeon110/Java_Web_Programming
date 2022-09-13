@@ -5,7 +5,9 @@ import java.util.Map;
 import spms.dao.MariaDbMemberDao;
 import spms.vo.Member;
 import spms.bind.DataBinding;
+import spms.annotation.Component;
 
+@Component("/member/add.do")
 public class MemberAddController implements Controller, DataBinding {
 	
 	MariaDbMemberDao memberDao;

@@ -2,7 +2,9 @@ package spms.controls;
 
 import java.util.Map;
 import spms.dao.MariaDbMemberDao;
+import spms.annotation.Component;
 
+@Component("/member/list.do")
 public class MemberListController implements Controller {
 	
 	MariaDbMemberDao memberDao;

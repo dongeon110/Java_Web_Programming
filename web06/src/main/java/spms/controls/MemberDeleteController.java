@@ -4,7 +4,9 @@ import java.util.Map;
 
 import spms.dao.MariaDbMemberDao;
 import spms.bind.DataBinding;
+import spms.annotation.Component;
 
+@Component("/member/delete.do")
 public class MemberDeleteController implements Controller, DataBinding {
 	
 	MariaDbMemberDao memberDao;

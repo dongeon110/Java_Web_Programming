@@ -5,9 +5,11 @@ import java.util.Map;
 import spms.vo.Member;
 import spms.dao.MariaDbMemberDao;
 import spms.bind.DataBinding;
+import spms.annotation.Component;
 
 import javax.servlet.http.HttpSession;
 
+@Component("/auth/login.do")
 public class LogInController implements Controller, DataBinding {
 	
 	MariaDbMemberDao memberDao;

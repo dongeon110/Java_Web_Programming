@@ -5,6 +5,13 @@
 		http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	id="WebApp_ID" version="3.0">
 	<display-name>web06</display-name>
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/application-context.properties</param-value>
+	</context-param>
+	
+	
 	<resource-ref>
 		<res-ref-name>jdbc/test</res-ref-name>
 		<res-type>javax.sql.DataSource</res-type>
