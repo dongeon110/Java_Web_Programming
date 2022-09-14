@@ -8,4 +8,5 @@ public interface ProjectDao {
 	int insert(Project project) throws Exception;
 	Project selectOne(int no) throws Exception;
 	int update(Project project) throws Exception;
+	int delete(int no) throws Exception;
 }
