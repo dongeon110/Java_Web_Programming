@@ -53,7 +53,7 @@ public class MemberListServlet extends HttpServlet {
 			MariaDbMemberDao memberDao = (MariaDbMemberDao)sc.getAttribute("memberDao");
 //			memberDao.setConnection(conn);
 			
-			request.setAttribute("members", memberDao.selectList());
+//			request.setAttribute("members", memberDao.selectList());
 			
 
 //			stmt = conn.createStatement();

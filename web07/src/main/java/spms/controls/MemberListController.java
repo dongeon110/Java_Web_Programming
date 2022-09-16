@@ -1,16 +1,24 @@
 package spms.controls;
 
+import java.util.HashMap;
 import java.util.Map;
 import spms.dao.MariaDbMemberDao;
 import spms.annotation.Component;
+import spms.bind.DataBinding;
 
 @Component("/member/list.do")
-public class MemberListController implements Controller {
+public class MemberListController implements Controller, DataBinding{
 	
 	MariaDbMemberDao memberDao;
 	public MemberListController setMemberDao(MariaDbMemberDao memberDao) {
 		this.memberDao = memberDao;
 		return this;
+	}
+	
+	public Object[] getDataBinders() {
+		return new Object[] {
+				"orderCond", String.class
+		};
 	}
 	
 	@Override
@@ -21,7 +29,10 @@ public class MemberListController implements Controller {
 //		MemberDao memberDao = (MemberDao) model.get("memberDao");
 		
 		// PageController 가 작업한 결과물을 Map에 담기
-		model.put("members", memberDao.selectList());
+		
+		HashMap<String, Object> paramMap = new HashMap<>();
+		paramMap.put("orderCond", model.get("orderCond"));
+		model.put("members", memberDao.selectList(paramMap));
 		
 		return "/member/MemberList.jsp";
 	}

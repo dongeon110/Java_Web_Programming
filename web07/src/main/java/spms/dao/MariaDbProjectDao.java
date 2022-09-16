@@ -7,6 +7,8 @@ import java.sql.Date;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Hashtable;
 
 import javax.sql.DataSource;
 
@@ -25,10 +27,18 @@ public class MariaDbProjectDao implements ProjectDao {
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
 	
-	public List<Project> selectList() throws Exception {
+//	public List<Project> selectList() throws Exception {
+//		SqlSession sqlSession = sqlSessionFactory.openSession();
+//		try {
+//			return sqlSession.selectList("spms.dao.ProjectDao.selectList");
+//		} finally {
+//			sqlSession.close();
+//		}
+//	}
+	public List<Project> selectList(HashMap<String, Object> paramMap) throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
-			return sqlSession.selectList("spms.dao.ProjectDao.selectList");
+			return sqlSession.selectList("spms.dao.ProjectDao.selectList", paramMap);
 		} finally {
 			sqlSession.close();
 		}
@@ -54,12 +64,55 @@ public class MariaDbProjectDao implements ProjectDao {
 		}
 	}
 	
+//	public int update(Project project) throws Exception {
+//		SqlSession sqlSession = sqlSessionFactory.openSession();
+//		try {
+//			int count = sqlSession.update("spms.dao.ProjectDao.update", project);
+//			sqlSession.commit();
+//			return count;
+//		} finally {
+//			sqlSession.close();
+//		}
+//	}
+	
 	public int update(Project project) throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
-			int count = sqlSession.update("spms.dao.ProjectDao.update", project);
-			sqlSession.commit();
-			return count;
+			Project original = sqlSession.selectOne(
+					"spms.dao.ProjectDao.selectOne", project.getNo());
+			
+			Hashtable<String, Object> paramMap = new Hashtable<>();
+			
+			if (!project.getTitle().equals(original.getTitle())) {
+				paramMap.put("title", project.getTitle());
+			}
+			if (!project.getContent().equals(original.getContent())) {
+				paramMap.put("content", project.getContent());
+			}
+			if (!project.getStartDate().equals(original.getStartDate())) {
+				paramMap.put("startDate", project.getStartDate());
+			}
+			if (!project.getEndDate().equals(original.getEndDate())) {
+				paramMap.put("endDate", project.getEndDate());
+			}
+			if (project.getState() != original.getState()) {
+				paramMap.put("state", project.getState());
+			}
+			if (!project.getTags().equals(original.getTags())) {
+				paramMap.put("tags", project.getTags());
+			}
+			
+			if(paramMap.size() > 0) {
+				paramMap.put("no", project.getNo());
+				int count = sqlSession.update("spms.dao.ProjectDao.update", paramMap);
+
+				sqlSession.commit();
+				return count;
+			} else {
+				return 0;
+			}
+			
+			
 		} finally {
 			sqlSession.close();
 		}

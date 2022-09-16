@@ -1,9 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?> <!-- XML 선언 -->
+<!-- 태그 규칙을 정의한 DTD 선언 -->
 <!DOCTYPE configuration
 	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+
 <configuration>
+	<!-- myBatis에서 관리하지 않게 JNDI로 설정했기 때문에 db.properties를 참조 할 필요X
 	<properties resource="spms/dao/db.properties"/>
+	-->
+	
+	<!-- log남기는 세팅 -->
+	<settings>
+		<setting name="logImpl" value="LOG4J"/>
+	</settings>
 	
 	<typeAliases>
 		<typeAlias type="spms.vo.Project" alias="project"/>
@@ -13,16 +23,26 @@
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC"/>
+			
+			<!-- dataSource type="POOLED" // 커넥션 객체를 미리 생성해놓고 요청시 즉시 반환 (mybatis에서 직접 DB커넥션 관리)
+			 	type="JNDI" // Java EE 애플리케이션 서버나 서블릿 컨테이너(ex Tomcat server) 에서 제공하는 데이터 소스를 사용-->
+			<!--  	
 			<dataSource type="POOLED">
 				<property name="driver" value="${driver}"/>
 				<property name="url" value="${url}"/>
 				<property name="username" value="${username}"/>
 				<property name="password" value="${password}"/>
 			</dataSource>
+			 -->
+			<dataSource type="JNDI">
+				<property name="data_source" value="java:comp/env/jdbc/test"/>
+			</dataSource>
+			 
 		</environment>
 	</environments>
 	
 	<mappers>
 		<mapper resource="spms/dao/MariaDbProjectDao.xml"/>
+		<mapper resource="spms/dao/MariaDbMemberDao.xml"/>
 	</mappers>
 </configuration>
