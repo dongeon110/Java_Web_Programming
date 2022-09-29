@@ -6,11 +6,10 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
-	<bean id="hankookTire" class="exam.test13.TireFactoryBean">
-		<property name="maker" value="Hankook"/>	
-	</bean>
+	<bean id="hyundaiEngine" class="exam.test14.Engine"
+		p:maker="Hyundai" p:cc="1997"/>
 	
-	<bean id="kumhoTire" class="exam.test13.TireFactoryBean">
-		<property name="maker" value="Kumho"/>
-	</bean>
+	<bean id="kiaEngine" class="exam.test14.Engine"
+		p:maker="Kia" p:cc="3000"
+		scope="prototype"/>
 </beans>

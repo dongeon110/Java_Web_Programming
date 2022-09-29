@@ -7,7 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Test {
 	public static void main(String[] args) {
-		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("exam/test12/beans.xml");
+		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("exam/test13/beans.xml");
 		
 		Tire t1 = (Tire) ctx.getBean("hankookTire");
 		Tire t2 = (Tire) ctx.getBean("kumhoTire");
